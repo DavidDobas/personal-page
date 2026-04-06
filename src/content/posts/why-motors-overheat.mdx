@@ -1,0 +1,42 @@
+---
+title: "Why motors overheat (and what your PD gains have to do with it)"
+date: "2026-04-06"
+description: "Aggressive PD tuning feels like better control. Until the motor hits 90°C and shuts off."
+---
+
+Motors overheat because they dissipate power as heat. The power dissipated is $P = I^2 R$.
+So the question is always: what's driving current?
+
+## The naive answer
+
+Current tracks torque. Torque tracks error (if you're running a PD loop). So:
+
+- Big error → big torque demand → big current → heat
+
+If your robot falls slightly behind on a trajectory and the gains are high,
+the controller commands a large corrective torque. The motor draws heavy current.
+If this happens repeatedly — oscillation, sustained disturbance, bad feedforward —
+thermal energy builds up faster than it dissipates.
+
+## Why high $k_p$ is a hidden heater
+
+With a high proportional gain, small position errors produce large torque commands.
+The motor is constantly working hard to cancel tiny deviations.
+From the thermal model's point of view, it's the same as running at partial load continuously.
+
+A lower gain that tolerates a bit more error often means dramatically lower average current.
+
+## The fix isn't always lower gains
+
+Sometimes the issue is a bad feedforward — the controller is fighting gravity or
+inertia with feedback instead of predicting it. Adding a proper gravity compensation term
+or feed-forward torque can cut the steady-state current significantly without sacrificing tracking.
+
+## What to actually monitor
+
+- **Winding temperature** — if you have a temp sensor, plot it
+- **RMS current over a trajectory** — not peak, RMS
+- **Duty cycle** — how long is the motor near saturation?
+
+Thermal margins matter more in legged robots than people expect,
+because locomotion is not a short burst — it's sustained.
