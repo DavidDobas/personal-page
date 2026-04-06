@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import Image from "next/image";
 import Link from "next/link";
 import { getAllPosts } from "@/lib/posts";
 
@@ -51,24 +52,36 @@ export default function Home() {
 
   return (
     <main className="w-full max-w-2xl mx-auto px-6 py-24">
-      <h1 className="text-3xl font-semibold tracking-tight mb-2" style={{ fontFamily: "var(--font-name)" }}>{name}</h1>
-      <p className="text-zinc-500 mb-4">{tagline}</p>
-
-      <div className="flex gap-4 mb-10">
-        {socialLinks.map(({ key, label, Icon }) =>
-          social?.[key] ? (
-            <a
-              key={key}
-              href={social[key]}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={label}
-              className="text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
-            >
-              <Icon />
-            </a>
-          ) : null
-        )}
+      <div className="flex items-center gap-6 mb-10">
+        <div className="w-20 h-28 rounded-xl overflow-hidden shrink-0">
+          <Image
+            src="/images/headshot-1.jpeg"
+            alt={name}
+            width={80}
+            height={112}
+            className="object-cover object-top w-full h-full"
+          />
+        </div>
+        <div>
+          <h1 className="text-3xl font-semibold tracking-tight mb-1" style={{ fontFamily: "var(--font-name)" }}>{name}</h1>
+          <p className="text-zinc-500 mb-2">{tagline}</p>
+          <div className="flex gap-4">
+            {socialLinks.map(({ key, label, Icon }) =>
+              social?.[key] ? (
+                <a
+                  key={key}
+                  href={social[key]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+                >
+                  <Icon />
+                </a>
+              ) : null
+            )}
+          </div>
+        </div>
       </div>
 
       <section className="mb-12">
