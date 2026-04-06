@@ -1,5 +1,5 @@
 ---
-name: "David Dobas"
+name: "David Dobáš"
 tagline: "Physicist turned Roboticist."
 social:
   x: "https://x.com/DDobas"
