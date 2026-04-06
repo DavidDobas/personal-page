@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import theme from "@/config/theme";
@@ -42,6 +43,12 @@ export default function RootLayout({
       <head>
         <style dangerouslySetInnerHTML={{ __html: themeVars }} />
       </head>
+      <Script
+        defer
+        src="https://cloud.umami.is/script.js"
+        data-website-id="190e4739-8fd6-4f30-b5c3-afa23e7af9ff"
+        strategy="afterInteractive"
+      />
       <body className="min-h-full flex flex-col">
         <ThemeProvider>
           <header className="fixed top-0 right-0 p-4 z-50">
