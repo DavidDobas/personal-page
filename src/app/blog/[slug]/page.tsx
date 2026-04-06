@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import rehypePrettyCode from "rehype-pretty-code";
+import "katex/dist/katex.min.css";
 import { getAllPosts, getPost } from "@/lib/posts";
 
 export async function generateStaticParams() {
@@ -22,14 +26,25 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   try {
     const { meta, content } = getPost(slug);
     return (
-      <main className="max-w-2xl mx-auto px-6 py-24">
+      <main className="w-full max-w-2xl mx-auto px-6 py-24">
         <Link href="/blog" className="text-sm text-zinc-400 hover:text-zinc-600 mb-10 inline-block">
           ← All posts
         </Link>
         <span className="text-xs text-zinc-400 font-mono block mb-2">{meta.date}</span>
         <h1 className="text-2xl font-semibold tracking-tight mb-10">{meta.title}</h1>
-        <article className="prose prose-zinc dark:prose-invert max-w-none">
-          <MDXRemote source={content} />
+        <article className="prose prose-zinc dark:prose-invert max-w-none" style={{ fontSize: "var(--font-post-size)" }}>
+          <MDXRemote
+            source={content}
+            options={{
+              mdxOptions: {
+                remarkPlugins: [remarkMath],
+                rehypePlugins: [
+                  rehypeKatex,
+                  [rehypePrettyCode, { theme: { light: "github-light", dark: "github-dark" } }],
+                ],
+              },
+            }}
+          />
         </article>
       </main>
     );

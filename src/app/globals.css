@@ -1,27 +1,97 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Enable class-based dark mode for Tailwind (set by next-themes) */
+@variant dark (&:where(.dark, .dark *));
+
+/* ─── CUSTOM FONTS ───────────────────────────────────────────────────────────
+   Drop your font files in public/fonts/, uncomment and fill in below,
+   then update font.sans / font.mono in src/config/theme.ts.
+
+@font-face {
+  font-family: "MyFont";
+  src: url("/fonts/MyFont.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+──────────────────────────────────────────────────────────────────────────── */
+
+@font-face {
+  font-family: "Bagnard";
+  src: url("/fonts/Bagnard.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SourceSerif4";
+  src: url("/fonts/source-serif-4-v14-latin-ext-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SourceSerif4";
+  src: url("/fonts/source-serif-4-v14-latin-ext-300.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SourceSerif4";
+  src: url("/fonts/source-serif-4-v14-latin-ext-600.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SourceSerif4";
+  src: url("/fonts/source-serif-4-v14-latin-ext-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+/* Code blocks from rehype-pretty-code */
+.prose [data-rehype-pretty-code-figure] pre {
+  padding: 1rem 1.25rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  background-color: #f0ede6;
+  color: unset;
+}
+
+.dark .prose [data-rehype-pretty-code-figure] pre {
+  background-color: #1a1a1a;
+}
+
+/* Apply shiki token colors (background handled by pre above) */
+code[data-theme*=" "],
+code[data-theme*=" "] span {
+  color: var(--shiki-light);
+  background-color: transparent !important;
+}
+
+.dark code[data-theme*=" "],
+.dark code[data-theme*=" "] span {
+  color: var(--shiki-dark);
+  background-color: transparent !important;
 }

@@ -5,7 +5,7 @@ export default function BlogIndex() {
   const posts = getAllPosts();
 
   return (
-    <main className="max-w-2xl mx-auto px-6 py-24">
+    <main className="w-full max-w-2xl mx-auto px-6 py-24">
       <Link href="/" className="text-sm text-zinc-400 hover:text-zinc-600 mb-10 inline-block">
         ← Home
       </Link>

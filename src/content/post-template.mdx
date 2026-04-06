@@ -1,0 +1,34 @@
+---
+title: "Post title"
+date: "2026-01-01"
+description: "One-liner summary shown in the post list."
+---
+
+Intro paragraph.
+
+## Section heading
+
+Body text. You can use **bold**, *italic*, `inline code`.
+
+```python
+# fenced code block
+def torque(kp, error):
+    return kp * error
+```
+
+## Math (if you add remark-math)
+
+Inline: $P = I^2 R$
+
+Block:
+$$
+\tau = k_p e + k_d \dot{e}
+$$
+
+## Embedding a component
+
+Import and drop in any React component:
+
+import { MyPlot } from "@/components/MyPlot";
+
+<MyPlot data={[1, 2, 3]} />
