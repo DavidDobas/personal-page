@@ -12,6 +12,7 @@ export type PostMeta = {
 };
 
 export function getAllPosts(): PostMeta[] {
+  if (!fs.existsSync(postsDir)) return [];
   const files = fs.readdirSync(postsDir).filter((f) => f.endsWith(".mdx"));
   return files
     .map((file) => {
