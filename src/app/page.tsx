@@ -12,7 +12,7 @@ function getAbout() {
     name: data.name as string,
     tagline: data.tagline as string,
     bio: content.trim(),
-    social: data.social as { x?: string; linkedin?: string; github?: string },
+    social: data.social as { x?: string; linkedin?: string; github?: string; cv?: string },
   };
 }
 
@@ -32,6 +32,14 @@ function LinkedInIcon() {
   );
 }
 
+function CVIcon() {
+  return (
+    <span className="font-semibold tracking-widest leading-none" style={{ fontFamily: "var(--font-name)", fontSize: "1rem" }}>
+      CV
+    </span>
+  );
+}
+
 function GitHubIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -41,9 +49,10 @@ function GitHubIcon() {
 }
 
 const socialLinks = [
-  { key: "x" as const, label: "X", Icon: XIcon },
-  { key: "linkedin" as const, label: "LinkedIn", Icon: LinkedInIcon },
-  { key: "github" as const, label: "GitHub", Icon: GitHubIcon },
+  { key: "x" as const, label: "X", Icon: XIcon, ml: "" },
+  { key: "linkedin" as const, label: "LinkedIn", Icon: LinkedInIcon, ml: "" },
+  { key: "github" as const, label: "GitHub", Icon: GitHubIcon, ml: "" },
+  { key: "cv" as const, label: "CV", Icon: CVIcon, ml: "-ml-[3px]" },
 ];
 
 export default function Home() {
@@ -65,8 +74,8 @@ export default function Home() {
         <div>
           <h1 className="text-3xl font-semibold tracking-tight mb-1" style={{ fontFamily: "var(--font-name)" }}>{name}</h1>
           <p className="text-zinc-500 mb-2">{tagline}</p>
-          <div className="flex gap-4">
-            {socialLinks.map(({ key, label, Icon }) =>
+          <div className="flex items-center gap-4">
+            {socialLinks.map(({ key, label, Icon, ml }) =>
               social?.[key] ? (
                 <a
                   key={key}
@@ -74,7 +83,7 @@ export default function Home() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+                  className={`text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors ${ml}`}
                 >
                   <Icon />
                 </a>
