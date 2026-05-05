@@ -7,11 +7,12 @@ import { getAllPosts } from "@/lib/posts";
 
 function getAbout() {
   const raw = fs.readFileSync(path.join(process.cwd(), "src/content/about.md"), "utf-8");
-  const { data, content } = matter(raw);
+  const { data } = matter(raw);
   return {
     name: data.name as string,
     tagline: data.tagline as string,
-    bio: content.trim(),
+    position_current: data.position_current as string,
+    positions_past: data.positions_past as string[],
     social: data.social as { x?: string; linkedin?: string; github?: string; cv?: string },
   };
 }
@@ -57,7 +58,7 @@ const socialLinks = [
 
 export default function Home() {
   const posts = getAllPosts();
-  const { name, tagline, bio, social } = getAbout();
+  const { name, tagline, position_current, positions_past, social } = getAbout();
 
   return (
     <main className="w-full max-w-2xl mx-auto px-6 py-24">
@@ -94,7 +95,12 @@ export default function Home() {
       </div>
 
       <section className="mb-12">
-        <p className="text-zinc-700 dark:text-zinc-300 leading-7">{bio}</p>
+        <p className="text-zinc-700 dark:text-zinc-300 leading-7">{position_current}</p>
+        {positions_past?.length > 0 && (
+          <p className="text-zinc-400 dark:text-zinc-500 text-sm mt-1">
+            {positions_past.join(" · ")}
+          </p>
+        )}
       </section>
 
       <section>
