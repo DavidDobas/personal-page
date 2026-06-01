@@ -4,6 +4,7 @@ import matter from "gray-matter";
 import Image from "next/image";
 import Link from "next/link";
 import { getAllPosts } from "@/lib/posts";
+import { getAllPapers } from "@/lib/papers";
 
 function getAbout() {
   const raw = fs.readFileSync(path.join(process.cwd(), "src/content/about.md"), "utf-8");
@@ -49,6 +50,73 @@ function GitHubIcon() {
   );
 }
 
+function ArxivIcon() {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/arxiv-logomark-small.svg"
+      alt=""
+      aria-hidden="true"
+      width={12}
+      height={16}
+      className="h-4 w-auto"
+    />
+  );
+}
+
+function PdfIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M14 3v5h5M9 13h6M9 17h6" />
+    </svg>
+  );
+}
+
+function PaperLink({
+  href,
+  label,
+  Icon,
+  external,
+}: {
+  href: string;
+  label: string;
+  Icon: () => React.JSX.Element;
+  external?: boolean;
+}) {
+  return (
+    <a
+      href={href}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      className="inline-flex items-center gap-1.5 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+    >
+      <Icon />
+      {label}
+    </a>
+  );
+}
+
+function PaperLinks({ paper }: { paper: { arxiv?: string; pdf?: string; code?: string } }) {
+  const links = [
+    paper.arxiv ? { href: paper.arxiv, label: "arXiv", Icon: ArxivIcon, external: true } : null,
+    paper.pdf ? { href: paper.pdf, label: "PDF", Icon: PdfIcon, external: false } : null,
+    paper.code ? { href: paper.code, label: "code", Icon: GitHubIcon, external: true } : null,
+  ].filter(Boolean) as { href: string; label: string; Icon: () => React.JSX.Element; external: boolean }[];
+
+  if (links.length === 0) return null;
+
+  return (
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-3 text-sm">
+      {links.map((link, i) => (
+        <span key={link.label} className="inline-flex items-center gap-3">
+          {i > 0 && <span className="text-zinc-300 dark:text-zinc-700">|</span>}
+          <PaperLink {...link} />
+        </span>
+      ))}
+    </div>
+  );
+}
+
 const socialLinks = [
   { key: "x" as const, label: "X", Icon: XIcon, ml: "" },
   { key: "linkedin" as const, label: "LinkedIn", Icon: LinkedInIcon, ml: "" },
@@ -58,10 +126,11 @@ const socialLinks = [
 
 export default function Home() {
   const posts = getAllPosts();
+  const papers = getAllPapers();
   const { name, tagline, position_current, positions_past, social } = getAbout();
 
   return (
-    <main className="w-full max-w-2xl mx-auto px-6 py-24">
+    <main className="w-full max-w-3xl mx-auto px-6 py-24">
       <div className="flex items-center gap-6 mb-10">
         <div className="w-20 h-28 rounded-xl overflow-hidden shrink-0">
           <Image
@@ -101,6 +170,52 @@ export default function Home() {
             {positions_past.join(" · ")}
           </p>
         )}
+      </section>
+
+      <section className="mb-12">
+        <h2 className="text-sm font-semibold uppercase tracking-widest text-zinc-400 mb-6">Papers</h2>
+        {papers.length === 0 && <p className="text-zinc-500">No papers yet...</p>}
+        <ul className="space-y-10">
+          {papers.map((paper) => (
+            <li key={paper.slug} className="flex gap-6">
+              {paper.thumbnail && (
+                <div className="w-32 h-32 shrink-0 rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900">
+                  <Image
+                    src={paper.thumbnail}
+                    alt=""
+                    width={128}
+                    height={128}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+              )}
+              <div className="min-w-0 flex-1">
+                <span className="text-xs text-zinc-400 font-mono">{paper.date}</span>
+                {paper.arxiv ? (
+                  <a
+                    href={paper.arxiv}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group block"
+                  >
+                    <h3 className="text-lg font-medium group-hover:underline underline-offset-4 mt-0.5">
+                      {paper.title}
+                    </h3>
+                  </a>
+                ) : (
+                  <h3 className="text-lg font-medium mt-0.5">{paper.title}</h3>
+                )}
+                {paper.authors.length > 0 && (
+                  <p className="text-zinc-500 text-sm mt-1">{paper.authors.join(", ")}</p>
+                )}
+                {paper.abstract && (
+                  <p className="text-zinc-500 text-sm mt-2 leading-relaxed">{paper.abstract}</p>
+                )}
+                <PaperLinks paper={paper} />
+              </div>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section>
