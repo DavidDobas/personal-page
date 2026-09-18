@@ -1,7 +1,7 @@
 ---
 name: "David Dobáš"
 tagline: "Physicist turned Roboticist."
-position_current: "Robotics Research Engineer @ UFB"
+position_current: "Member of Technical Staff @ Innate"
 positions_past:
   - "ex-quant @ RSJ"
   - "ex-high school teacher"
