@@ -10,8 +10,8 @@ const geistSans = Geist({ subsets: ["latin"] });
 const geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "David Dobáš — Robotics Research Engineer | Physics, Robotics, AI",
-  description: "Physicist turned roboticist. Training and deploying policies for humanoid robots. Robotics Research Engineer at UFB.",
+  title: "David Dobáš — Roboticist | Physics, Robotics, AI",
+  description: "Physicist turned roboticist. Member of Technical Staff at Innate. TED2026 speaker.",
 };
 
 const themeVars = `
