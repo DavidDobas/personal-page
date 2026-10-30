@@ -185,13 +185,13 @@ export default function Home() {
                     href={talk.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-44 h-24 shrink-0 rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900"
+                    className="w-40 aspect-video shrink-0 rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900"
                   >
                     <Image
                       src={talk.thumbnail}
                       alt=""
-                      width={176}
-                      height={96}
+                      width={160}
+                      height={90}
                       className="object-cover w-full h-full"
                     />
                   </a>
@@ -226,12 +226,12 @@ export default function Home() {
           {papers.map((paper) => (
             <li key={paper.slug} className="flex gap-6">
               {paper.thumbnail && (
-                <div className="w-32 h-32 shrink-0 rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900">
+                <div className="w-40 h-40 shrink-0 rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900">
                   <Image
                     src={paper.thumbnail}
                     alt=""
-                    width={128}
-                    height={128}
+                    width={160}
+                    height={160}
                     className="object-cover w-full h-full"
                   />
                 </div>
