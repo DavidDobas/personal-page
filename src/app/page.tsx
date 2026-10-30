@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getAllPosts } from "@/lib/posts";
 import { getAllPapers } from "@/lib/papers";
+import { getAllTalks } from "@/lib/talks";
 
 function getAbout() {
   const raw = fs.readFileSync(path.join(process.cwd(), "src/content/about.md"), "utf-8");
@@ -127,6 +128,7 @@ const socialLinks = [
 export default function Home() {
   const posts = getAllPosts();
   const papers = getAllPapers();
+  const talks = getAllTalks();
   const { name, tagline, position_current, positions_past, social } = getAbout();
 
   return (
@@ -171,6 +173,51 @@ export default function Home() {
           </p>
         )}
       </section>
+
+      {talks.length > 0 && (
+        <section className="mb-12">
+          <h2 className="text-sm font-semibold uppercase tracking-widest text-zinc-400 mb-6">Talks</h2>
+          <ul className="space-y-10">
+            {talks.map((talk) => (
+              <li key={talk.slug} className="flex gap-6">
+                {talk.thumbnail && (
+                  <a
+                    href={talk.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-44 h-24 shrink-0 rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900"
+                  >
+                    <Image
+                      src={talk.thumbnail}
+                      alt=""
+                      width={176}
+                      height={96}
+                      className="object-cover w-full h-full"
+                    />
+                  </a>
+                )}
+                <div className="min-w-0 flex-1">
+                  <span className="text-xs text-zinc-400 font-mono">
+                    {[talk.event, talk.date].filter(Boolean).join(" · ")}
+                  </span>
+                  {talk.url ? (
+                    <a href={talk.url} target="_blank" rel="noopener noreferrer" className="group block">
+                      <h3 className="text-lg font-medium group-hover:underline underline-offset-4 mt-0.5">
+                        {talk.title}
+                      </h3>
+                    </a>
+                  ) : (
+                    <h3 className="text-lg font-medium mt-0.5">{talk.title}</h3>
+                  )}
+                  {talk.description && (
+                    <p className="text-zinc-500 text-sm mt-2 leading-relaxed">{talk.description}</p>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className="mb-12">
         <h2 className="text-sm font-semibold uppercase tracking-widest text-zinc-400 mb-6">Papers</h2>
@@ -218,25 +265,26 @@ export default function Home() {
         </ul>
       </section>
 
-      <section>
-        <h2 className="text-sm font-semibold uppercase tracking-widest text-zinc-400 mb-6">Writing</h2>
-        {posts.length === 0 && <p className="text-zinc-500">No posts yet...</p>}
-        <ul className="space-y-8">
-          {posts.map((post) => (
-            <li key={post.slug}>
-              <Link href={`/blog/${post.slug}`} className="group block">
-                <span className="text-xs text-zinc-400 font-mono">{post.date}</span>
-                <h2 className="text-lg font-medium group-hover:underline underline-offset-4 mt-0.5">
-                  {post.title}
-                </h2>
-                {post.description && (
-                  <p className="text-zinc-500 text-sm mt-1">{post.description}</p>
-                )}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
+      {posts.length > 0 && (
+        <section>
+          <h2 className="text-sm font-semibold uppercase tracking-widest text-zinc-400 mb-6">Writing</h2>
+          <ul className="space-y-8">
+            {posts.map((post) => (
+              <li key={post.slug}>
+                <Link href={`/blog/${post.slug}`} className="group block">
+                  <span className="text-xs text-zinc-400 font-mono">{post.date}</span>
+                  <h2 className="text-lg font-medium group-hover:underline underline-offset-4 mt-0.5">
+                    {post.title}
+                  </h2>
+                  {post.description && (
+                    <p className="text-zinc-500 text-sm mt-1">{post.description}</p>
+                  )}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </main>
   );
 }
